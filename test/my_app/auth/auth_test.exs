@@ -1,5 +1,8 @@
 defmodule MyApp.AuthTest do
   use MyApp.DataCase
+  use Phoenix.ConnTest
+
+  @endpoint MyAppWeb.Endpoint
 
   alias MyApp.Auth
 
@@ -29,12 +32,44 @@ defmodule MyApp.AuthTest do
       assert Auth.get_user!(user.id) == %User{user | password: nil}
     end
 
+    @query """
+    {
+      allUsers {
+        email
+        isActive
+      }
+    }
+    """
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
       assert user.email == "some email"
       assert user.is_active == true
       assert Bcrypt.verify_pass("some password", user.password_hash)
+      conn = build_conn()
+      conn = get conn, "/api", query: @query
+      assert json_response(conn, 200) == %{
+        "data" => 
+          %{"allUsers" => [
+            %{"email" => "some email", "isActive" => true}
+            ]
+          }
+        }
     end
+
+    # @query """
+    # mutation ($email: email!) {
+    #   signInUser(input: $email) {
+    #     email
+    #     isActive
+    #   }
+    # }
+    # """
+    # test "sign in correctly" do
+    #   assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
+    #   conn = build_conn()
+    #   conn = post conn, "/api", query: @query, variables: %{"email" => "some email", "password" => "some password"}
+    #   assert json_response(conn, 200) == user
+    # end
 
     test "create_user/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Auth.create_user(@invalid_attrs)

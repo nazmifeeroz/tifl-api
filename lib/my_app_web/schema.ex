@@ -14,6 +14,15 @@ defmodule MyAppWeb.Schema do
     field :create_user, :user do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
+
+      resolve &UsersResolver.create_user/3
+    end
+
+    field :sign_in_user, :user do
+      arg :email, non_null(:string)
+      arg :password, non_null(:string)
+
+      resolve &UsersResolver.authenticate_user/3
     end
   end
 
