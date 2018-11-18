@@ -42,7 +42,10 @@ defmodule MyApp.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:absinthe, "~> 1.4"}
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
+      {:poison, "~> 3.0.0"},
+
     ]
   end
 
