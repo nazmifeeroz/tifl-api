@@ -56,20 +56,24 @@ defmodule MyApp.AuthTest do
         }
     end
 
-    # @query """
-    # mutation ($email: email!) {
-    #   signInUser(input: $email) {
-    #     email
-    #     isActive
-    #   }
-    # }
-    # """
-    # test "sign in correctly" do
-    #   assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
-    #   conn = build_conn()
-    #   conn = post conn, "/api", query: @query, variables: %{"email" => "some email", "password" => "some password"}
-    #   assert json_response(conn, 200) == user
-    # end
+    @query """
+    mutation ($email: String!, $password: String!) {
+      signInUser(email: $email, password: $password) {
+        email
+        isActive
+      }
+    }
+    """
+    test "sign in correctly" do
+      assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
+      conn = build_conn()
+      conn = post conn, "/api", query: @query, variables: %{ "email" => "some email", "password" => "some password"}
+      assert json_response(conn, 200) == %{
+        "data" => %{
+          "signInUser" => %{"email" => "some email", "isActive" => true}
+        }
+      }
+    end
 
     test "create_user/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Auth.create_user(@invalid_attrs)
