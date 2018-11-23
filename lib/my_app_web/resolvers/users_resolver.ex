@@ -17,7 +17,8 @@ defmodule MyAppWeb.UsersResolver do
   def authenticate_user(_root, %{email: email, password: password}, _info) do
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
-        {:ok, user}
+        token = Auth.sign(%{id: user.id})
+        {:ok, %{token: token, user: user }}
       {:error, message} ->
         {:error, message}  
     end

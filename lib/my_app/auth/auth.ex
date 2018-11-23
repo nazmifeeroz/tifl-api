@@ -107,6 +107,10 @@ defmodule MyApp.Auth do
     query |> Repo.one() |> verify_password(password)
   end
 
+  def sign(data) do
+    Phoenix.Token.sign(MyAppWeb.Endpoint, "user_salt", data)
+  end
+
   defp verify_password(nil, _) do
     # Perform a dummy check to make user enumeration more difficult
     Bcrypt.no_user_verify()

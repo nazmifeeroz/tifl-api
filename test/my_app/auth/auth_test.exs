@@ -59,20 +59,37 @@ defmodule MyApp.AuthTest do
     @query """
     mutation ($email: String!, $password: String!) {
       signInUser(email: $email, password: $password) {
-        email
-        isActive
+        user {
+          email
+          isActive
+        }
       }
     }
     """
     test "sign in correctly" do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
       conn = build_conn()
-      conn = post conn, "/api", query: @query, variables: %{ "email" => "some email", "password" => "some password"}
+      conn = post conn, "/api", query: @query, variables: @valid_attrs
       assert json_response(conn, 200) == %{
         "data" => %{
-          "signInUser" => %{"email" => "some email", "isActive" => true}
+          "signInUser" => %{ 
+            "user" => %{ 
+              "email" => "some email", "isActive" => true
+            } 
+          }
         }
       }
+    end
+    test "invalid sign in" do
+      assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
+      conn = build_conn()
+      conn = post conn, "/api", query: @query, variables: @invalid_attrs
+      %{"errors" => [%{"locations" => [%{"column" => 0, "line" => 2}], "message" => message}, 
+      %{"locations" => [%{"column" => 0, "line" => 2}], "message" => "Argument \"password\" has invalid value $password."}, 
+      %{"locations" => [%{"column" => 0, "line" => 1}], "message" => "Variable \"email\": Expected non-null, found null."}, 
+      %{"locations" => [%{"column" => 0, "line" => 1}], "message" => "Variable \"password\": Expected non-null, found null."}
+      ]} = json_response(conn, 200)
+      assert message == "Argument \"email\" has invalid value $email."
     end
 
     test "create_user/1 with invalid data returns error changeset" do
