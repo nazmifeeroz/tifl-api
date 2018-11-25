@@ -8,6 +8,7 @@ defmodule MyApp.Auth.User do
     field :is_active, :boolean, default: false
     field :password, :string, virtual: true
     field :password_hash, :string
+    field :role, :string
 
     timestamps()
   end
@@ -15,8 +16,8 @@ defmodule MyApp.Auth.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :is_active, :password])
-    |> validate_required([:email, :is_active, :password])
+    |> cast(attrs, [:email, :is_active, :password, :role])
+    |> validate_required([:email, :is_active, :password, :role])
     |> unique_constraint(:email)
     |> put_password_hash()
   end

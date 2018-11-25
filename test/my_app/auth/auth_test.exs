@@ -9,9 +9,9 @@ defmodule MyApp.AuthTest do
   describe "users" do
     alias MyApp.Auth.User
 
-    @valid_attrs %{email: "some email", is_active: true, password: "some password"}
-    @update_attrs %{email: "some updated email", is_active: false, password: "some updated password"}
-    @invalid_attrs %{email: nil, is_active: nil, password: nil}
+    @valid_attrs %{email: "some email", is_active: true, password: "some password", role: "admin"}
+    @update_attrs %{email: "some updated email", is_active: false, password: "some updated password", role: "admin"}
+    @invalid_attrs %{email: nil, is_active: nil, password: nil, role: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -57,8 +57,60 @@ defmodule MyApp.AuthTest do
     end
 
     @query """
+    mutation ($email: String!, $is_active: String!, $password: String!, $role: String!) {
+      createUser(email: $email, password: $password, role: $role, isActive: $is_active) {
+        email
+        isActive
+      }
+    }
+    """
+    test "create user with authorised header" do
+      assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
+      conn = 
+        build_conn()
+        |> auth_user(user)
+
+      new_user = %{email: "new user email", is_active: true, password: "new user pass", role: "customer"}
+      conn = post conn, "/api", query: @query, variables: new_user
+
+      assert %{
+        "data" => %{
+          "createUser" => %{ 
+            "email" => "new user email", "isActive" => true
+          }
+        }
+      } = json_response(conn, 200) 
+    end
+    test "create user with unauthorised header" do
+      assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
+      conn = 
+        build_conn()
+        # |> auth_user(user)
+
+      new_user = %{email: "new user email", is_active: true, password: "new user pass", role: "customer"}
+      conn = post conn, "/api", query: @query, variables: new_user
+
+      assert %{
+        "data" => %{"createUser" => nil},
+        "errors" => [
+          %{
+            "locations" => [%{"column" => 0, "line" => 2}],
+            "message" => "unauthorized",
+            "path" => ["createUser"]
+          }
+        ]
+      } = json_response(conn, 200) 
+    end
+
+    defp auth_user(conn, user) do
+      token = MyApp.Auth.sign(%{id: user.id})
+      put_req_header(conn, "authorization", "Bearer #{token}")
+    end
+
+    @query """
     mutation ($email: String!, $password: String!) {
       signInUser(email: $email, password: $password) {
+        token
         user {
           email
           isActive
@@ -70,15 +122,17 @@ defmodule MyApp.AuthTest do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
       conn = build_conn()
       conn = post conn, "/api", query: @query, variables: @valid_attrs
-      assert json_response(conn, 200) == %{
+      assert %{
         "data" => %{
           "signInUser" => %{ 
+            "token" => token,
             "user" => %{ 
               "email" => "some email", "isActive" => true
             } 
           }
         }
-      }
+      } = json_response(conn, 200) 
+      assert {:ok, %{id: user.id }} == Auth.verify(token)
     end
     test "invalid sign in" do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)

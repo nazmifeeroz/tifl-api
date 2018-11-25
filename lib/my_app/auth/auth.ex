@@ -107,8 +107,20 @@ defmodule MyApp.Auth do
     query |> Repo.one() |> verify_password(password)
   end
 
+  @user_salt "user salt"
+
   def sign(data) do
-    Phoenix.Token.sign(MyAppWeb.Endpoint, "user_salt", data)
+    Phoenix.Token.sign(MyAppWeb.Endpoint, @user_salt, data)
+  end
+
+  def verify(token) do
+    Phoenix.Token.verify(MyAppWeb.Endpoint, @user_salt, token, [
+      max_age: 365 * 24 * 3600
+    ])
+  end
+
+  def lookup(id) do
+    Repo.get_by(User, id: id)
   end
 
   defp verify_password(nil, _) do

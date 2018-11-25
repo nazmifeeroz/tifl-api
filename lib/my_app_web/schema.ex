@@ -13,7 +13,9 @@ defmodule MyAppWeb.Schema do
   mutation do
     field :create_user, :user do
       arg :email, non_null(:string)
+      arg :is_active, non_null(:boolean)
       arg :password, non_null(:string)
+      arg :role, non_null(:string)
 
       resolve &UsersResolver.create_user/3
     end
