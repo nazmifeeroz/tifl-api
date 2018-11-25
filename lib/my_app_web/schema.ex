@@ -2,6 +2,7 @@ defmodule MyAppWeb.Schema do
   use Absinthe.Schema
 
   alias MyAppWeb.UsersResolver
+  alias MyAppWeb.Middleware
 
   query do
     @desc "Get all users"
@@ -12,11 +13,8 @@ defmodule MyAppWeb.Schema do
 
   mutation do
     field :create_user, :user do
-      arg :email, non_null(:string)
-      arg :is_active, non_null(:boolean)
-      arg :password, non_null(:string)
-      arg :role, non_null(:string)
-
+      arg :input, non_null(:create_user_input)
+      middleware Middleware.Authorize, "admin"
       resolve &UsersResolver.create_user/3
     end
 
@@ -26,6 +24,13 @@ defmodule MyAppWeb.Schema do
 
       resolve &UsersResolver.authenticate_user/3
     end
+  end
+
+  input_object :create_user_input do
+    field :email, non_null(:string)
+    field :is_active, non_null(:boolean)
+    field :password, non_null(:string)
+    field :role, non_null(:string)
   end
 
   object :session do

@@ -57,8 +57,8 @@ defmodule MyApp.AuthTest do
     end
 
     @query """
-    mutation ($email: String!, $is_active: String!, $password: String!, $role: String!) {
-      createUser(email: $email, password: $password, role: $role, isActive: $is_active) {
+    mutation ($createUserInput: CreateUserInput!) {
+      createUser(input: $createUserInput) {
         email
         isActive
       }
@@ -71,7 +71,7 @@ defmodule MyApp.AuthTest do
         |> auth_user(user)
 
       new_user = %{email: "new user email", is_active: true, password: "new user pass", role: "customer"}
-      conn = post conn, "/api", query: @query, variables: new_user
+      conn = post conn, "/api", query: @query, variables: %{ "createUserInput" => new_user }
 
       assert %{
         "data" => %{
@@ -88,7 +88,7 @@ defmodule MyApp.AuthTest do
         # |> auth_user(user)
 
       new_user = %{email: "new user email", is_active: true, password: "new user pass", role: "customer"}
-      conn = post conn, "/api", query: @query, variables: new_user
+      conn = post conn, "/api", query: @query, variables: %{ "createUserInput" => new_user }
 
       assert %{
         "data" => %{"createUser" => nil},

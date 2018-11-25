@@ -5,16 +5,14 @@ defmodule MyAppWeb.UsersResolver do
     {:ok, Auth.list_users()}
   end
 
-  def create_user(_root, args, %{context: context}) do
-    case context do
-      %{current_user: %{
-        role: "admin"
-      }} ->
-        with {:ok, user} <- Auth.create_user(args) do
-          {:ok, user}
-        end
-        _ ->
-          {:error, "unauthorized"}
+  # def create_user(_root, args, %{context: context}) do
+  def create_user(_root, %{input: args}, _) do
+    case Auth.create_user(args) do
+      {:ok, user} ->
+        {:ok, user}
+      {:error, _} ->
+        # {:error, error}
+        {:error, "error in insert"}
     end
   end
 
