@@ -6,7 +6,8 @@ defmodule MyAppWeb.Schema do
 
   query do
     @desc "Get all users"
-    field :all_users, non_null(list_of(non_null(:user))) do
+    field :all_users, list_of(:user) do
+      middleware Middleware.Authorize, :any
       resolve &UsersResolver.all_users/3
     end
   end
@@ -21,7 +22,6 @@ defmodule MyAppWeb.Schema do
     field :sign_in_user, :session do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
-
       resolve &UsersResolver.authenticate_user/3
     end
   end
