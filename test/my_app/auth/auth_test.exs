@@ -45,7 +45,7 @@ defmodule MyApp.AuthTest do
       assert user.email == "some email"
       assert user.is_active == true
       assert Bcrypt.verify_pass("some password", user.password_hash)
-      conn = build_conn()
+      conn = build_conn() |> auth_user(user)
       conn = get conn, "/api", query: @query
       assert json_response(conn, 200) == %{
         "data" => 
