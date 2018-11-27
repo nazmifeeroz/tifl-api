@@ -14,4 +14,15 @@ defmodule MyAppWeb.PostsResolver do
     end
   end
 
+  def delete_post(_root, %{ id: id }, _info) do
+    post = Dars.get_post!(id)
+    case Dars.delete_post(post) do
+      {:ok, post} ->
+        {:ok, post}
+      {:error, _} ->
+        {:error, "error deleting post"}
+    end
+  end
+
+
 end

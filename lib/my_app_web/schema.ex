@@ -41,6 +41,12 @@ defmodule MyAppWeb.Schema do
       resolve &PostsResolver.create_post/3
     end
 
+    field :delete_post, :post do
+      arg :id, non_null(:id)
+      middleware Middleware.Authorize, "admin"
+      resolve &PostsResolver.delete_post/3
+    end
+
   end
 
   input_object :create_post_input do
@@ -66,6 +72,7 @@ defmodule MyAppWeb.Schema do
   end
 
   object :post do
+    field :id, non_null(:id)
     field :title, non_null(:string)
     field :body, non_null(:string)
   end
