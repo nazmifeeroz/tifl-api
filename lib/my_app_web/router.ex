@@ -10,7 +10,8 @@ defmodule MyAppWeb.Router do
     pipe_through :api
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: MyAppWeb.Schema
+      schema: MyAppWeb.Schema,
+      socket: MyAppWeb.UserSocket
 
     forward "/", Absinthe.Plug,
     schema: MyAppWeb.Schema

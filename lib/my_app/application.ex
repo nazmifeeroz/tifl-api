@@ -6,12 +6,14 @@ defmodule MyApp.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      MyApp.Repo,
+      supervisor( MyApp.Repo, [] ),
       # Start the endpoint when the application starts
-      MyAppWeb.Endpoint
+      supervisor( MyAppWeb.Endpoint, [] ),
+      supervisor( Absinthe.Subscription, [MyAppWeb.Endpoint] )
       # Starts a worker by calling: MyApp.Worker.start_link(arg)
       # {MyApp.Worker, arg},
     ]
