@@ -1,5 +1,6 @@
 defmodule MyAppWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :my_app
+  use Absinthe.Phoenix.Endpoint
 
   socket "/socket", MyAppWeb.UserSocket,
     websocket: true,
