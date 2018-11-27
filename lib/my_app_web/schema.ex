@@ -35,6 +35,17 @@ defmodule MyAppWeb.Schema do
       resolve &UsersResolver.authenticate_user/3
     end
 
+    field :create_post, :post do
+      arg :input, non_null(:create_post_input)
+      middleware Middleware.Authorize, "admin"
+      resolve &PostsResolver.create_post/3
+    end
+
+  end
+
+  input_object :create_post_input do
+    field :title, non_null(:string)
+    field :body, non_null(:string)
   end
 
   input_object :create_user_input do
