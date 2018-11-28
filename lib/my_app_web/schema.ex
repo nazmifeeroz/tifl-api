@@ -49,6 +49,22 @@ defmodule MyAppWeb.Schema do
 
   end
 
+  subscription do
+    field :new_post, :post do
+      config fn _args, _info ->
+        {:ok, topic: "*"}
+      end
+
+      trigger(
+        [:create_post],
+        topic: fn payload ->
+          "*"
+        end
+      )
+
+    end
+  end
+
   input_object :create_post_input do
     field :title, non_null(:string)
     field :body, non_null(:string)
