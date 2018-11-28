@@ -7,7 +7,7 @@ defmodule MyApp.Commenting.Comment do
   schema "comments" do
     field :commented_at, :utc_datetime
     field :state, :string
-    field :comment, :text
+    field :comment, :string
 
     field :post_id, :id
     field :user_id, :id
