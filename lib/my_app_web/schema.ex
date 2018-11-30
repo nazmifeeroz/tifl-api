@@ -57,7 +57,7 @@ defmodule MyAppWeb.Schema do
 
       trigger(
         [:create_post],
-        topic: fn payload ->
+        topic: fn _payload ->
           "*"
         end
       )
