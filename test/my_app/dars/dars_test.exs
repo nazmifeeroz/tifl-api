@@ -19,11 +19,22 @@ defmodule MyApp.DarsTest do
       post
     end
 
+    @query """
+    {
+      allPosts {
+        title
+        body
+      }
+    }
+    """
     test "list_posts returns all post" do
       post = post_fixture()
       assert Dars.list_posts() == [post]
       # assert Dars.list_posts() == [%Post{post | body: nil}]
     end
 
+    test "create post" do
+      
+    end
   end
 end
