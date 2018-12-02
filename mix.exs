@@ -47,6 +47,7 @@ defmodule MyApp.MixProject do
       {:absinthe_phoenix, "~> 1.4.0"},
       {:absinthe_ecto, "~> 0.1.3"},
       {:poison, "~> 3.0.0"},
+      {:cors_plug, "~> 2.0"},
 
     ]
   end
