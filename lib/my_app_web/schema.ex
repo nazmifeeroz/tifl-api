@@ -68,6 +68,7 @@ defmodule MyAppWeb.Schema do
   input_object :create_post_input do
     field :title, non_null(:string)
     field :body, non_null(:string)
+    field :image, :string
   end
 
   input_object :create_user_input do
@@ -91,6 +92,7 @@ defmodule MyAppWeb.Schema do
     field :id, non_null(:id)
     field :title, non_null(:string)
     field :body, non_null(:string)
+    field :image, :string
   end
 
 end

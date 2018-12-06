@@ -6,6 +6,7 @@ defmodule MyApp.Dars.Post do
   schema "posts" do
     field :body, :string
     field :title, :string
+    field :image, :string
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule MyApp.Dars.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :body])
+    |> cast(attrs, [:title, :body, :image])
     |> validate_required([:title, :body])
   end
 end
