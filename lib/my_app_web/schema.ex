@@ -93,6 +93,7 @@ defmodule MyAppWeb.Schema do
     field :title, non_null(:string)
     field :body, non_null(:string)
     field :image, :string
+    field :inserted_at, :string
   end
 
 end
