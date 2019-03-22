@@ -5,10 +5,10 @@ defmodule GraphQL.UserTypes do
   alias GraphQL.UserResolvers
 
   object :user_queries do
-    connection field(:users, node_type: :user) do
+    connection field(:all_users, node_type: :user) do
       arg(:filter, :user_filter)
       # arg :order, type: :sort_order, default_value: :asc
-      resolve(&UserResolvers.list_users/3)
+      resolve(&UserResolvers.all_users/3)
     end
   end
 
