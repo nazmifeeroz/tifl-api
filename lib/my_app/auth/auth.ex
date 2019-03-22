@@ -17,8 +17,8 @@ defmodule MyApp.Auth do
       [%User{}, ...]
 
   """
-  def list_users do
-    Repo.all(User)
+  def list_users(query) do
+    Repo.all(query)
   end
 
   @doc """
