@@ -7,10 +7,10 @@ defmodule MyApp.Dars do
   alias MyApp.Repo
   alias MyApp.Dars.Post
 
-  def list_posts do
-    query = from q in Post,
+  def list_posts(query) do
+    args = from q in query,
     order_by: [ desc: q.inserted_at ]
-    Repo.all(query)
+    Repo.all(args)
   end
 
   def get_post!(id), do: Repo.get!(Post, id)

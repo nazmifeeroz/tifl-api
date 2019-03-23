@@ -20,6 +20,7 @@ defmodule MyAppWeb.UsersResolver do
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
         token = Auth.sign(%{id: user.id})
+        IO.inspect(token, label: 'token here')
         {:ok, %{token: token, user: user }}
       {:error, message} ->
         {:error, message}  

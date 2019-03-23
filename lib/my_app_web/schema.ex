@@ -2,16 +2,16 @@ defmodule MyAppWeb.Schema do
   use Absinthe.Schema
   use Absinthe.Relay.Schema, :modern
 
-  # alias MyAppWeb.UsersResolver
-  # alias MyAppWeb.PostsResolver
-  # alias MyAppWeb.Middleware
-
   import_types(GraphQL.UserTypes)
+  import_types(GraphQL.PostTypes)
 
   node interface do
     resolve_type fn
       %MyApp.Auth.User{}, _ ->
         :user
+      
+      %MyApp.Dars.Post{}, _ ->
+        :post
       _, _ ->
         nil
     end
@@ -19,7 +19,18 @@ defmodule MyAppWeb.Schema do
   
   query do
     import_fields(:user_queries)
+    import_fields(:post_queries)
   end
+
+  mutation do
+    import_fields(:user_mutations)
+  end
+
+end
+
+  # alias MyAppWeb.UsersResolver
+  # alias MyAppWeb.PostsResolver
+  # alias MyAppWeb.Middleware
 
   # query do
 
@@ -111,5 +122,3 @@ defmodule MyAppWeb.Schema do
   #   field :image, :string
   #   field :inserted_at, :string
   # end
-
-end
