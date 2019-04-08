@@ -9,7 +9,6 @@ defmodule MyApp.DarsTest do
   alias MyApp.Auth.User
 
   describe "dars" do
-    
     @post_attrs %{title: "some title", body: "some body"}
     @user_attrs %{email: "some email", is_active: true, password: "some password", role: "admin"}
 
@@ -52,19 +51,19 @@ defmodule MyApp.DarsTest do
       assert {:ok, %User{} = user} = Auth.create_user(@user_attrs)
       conn = build_conn() |> auth_user(user)
 
-      conn = post conn, "/api",
-        query: @query,
-        variables: %{"createPostInput" => @post_attrs}
+      conn =
+        post conn, "/api",
+          query: @query,
+          variables: %{"createPostInput" => @post_attrs}
 
       assert json_response(conn, 200) == %{
-          "data" => %{
-            "createPost" => %{
-              "body" => "some body",
-              "title" => "some title"
-            }
-          }
-        }
-        
+               "data" => %{
+                 "createPost" => %{
+                   "body" => "some body",
+                   "title" => "some title"
+                 }
+               }
+             }
     end
 
     @query """
@@ -79,23 +78,22 @@ defmodule MyApp.DarsTest do
       assert {:ok, %User{} = user} = Auth.create_user(@user_attrs)
       conn = build_conn() |> auth_user(user)
 
-      conn = post conn, "/api",
-        query: @query,
-        variables: %{"createPostInput" => @post_attrs}
+      conn =
+        post conn, "/api",
+          query: @query,
+          variables: %{"createPostInput" => @post_attrs}
 
       assert json_response(conn, 200) == %{
-          "data" => %{
-            "createPost" => %{
-              "body" => "some body",
-              "title" => "some title"
-            }
-          }
-        }
-        
+               "data" => %{
+                 "createPost" => %{
+                   "body" => "some body",
+                   "title" => "some title"
+                 }
+               }
+             }
     end
 
     test "create post" do
-      
     end
   end
 end

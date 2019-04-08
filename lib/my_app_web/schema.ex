@@ -3,57 +3,60 @@ defmodule MyAppWeb.Schema do
 
   alias MyAppWeb.UsersResolver
   alias MyAppWeb.PostsResolver
+  alias MyAppWeb.DeedsResolver
   alias MyAppWeb.Middleware
 
   query do
-
     @desc "Get all users"
     field :all_users, list_of(:user) do
-      middleware Middleware.Authorize, :any
-      resolve &UsersResolver.all_users/3
+      middleware(Middleware.Authorize, :any)
+      resolve(&UsersResolver.all_users/3)
     end
 
     @desc "Get all posts"
     field :all_posts, list_of(:post) do
-      middleware Middleware.Authorize, :any
-      resolve &PostsResolver.all_posts/3
+      middleware(Middleware.Authorize, :any)
+      resolve(&PostsResolver.all_posts/3)
     end
- 
+
+    @desc "Get all deeds"
+    field :all_deeds, list_of(:deed) do
+      middleware(Middleware.Authorize, :any)
+      resolve(&DeedsResolver.all_deeds/3)
+    end
   end
 
   mutation do
-
     field :create_user, :user do
-      arg :input, non_null(:create_user_input)
-      middleware Middleware.Authorize, "admin"
-      resolve &UsersResolver.create_user/3
+      arg(:input, non_null(:create_user_input))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&UsersResolver.create_user/3)
     end
 
     field :sign_in_user, :session do
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
-      resolve &UsersResolver.authenticate_user/3
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
+      resolve(&UsersResolver.authenticate_user/3)
     end
 
     field :create_post, :post do
-      arg :input, non_null(:create_post_input)
-      middleware Middleware.Authorize, "admin"
-      resolve &PostsResolver.create_post/3
+      arg(:input, non_null(:create_post_input))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&PostsResolver.create_post/3)
     end
 
     field :delete_post, :post do
-      arg :id, non_null(:id)
-      middleware Middleware.Authorize, "admin"
-      resolve &PostsResolver.delete_post/3
+      arg(:id, non_null(:id))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&PostsResolver.delete_post/3)
     end
-
   end
 
   subscription do
     field :new_post, :post do
-      config fn _args, _info ->
+      config(fn _args, _info ->
         {:ok, topic: "*"}
-      end
+      end)
 
       trigger(
         [:create_post],
@@ -61,7 +64,6 @@ defmodule MyAppWeb.Schema do
           "*"
         end
       )
-
     end
   end
 
@@ -95,5 +97,4 @@ defmodule MyAppWeb.Schema do
     field :image, :string
     field :inserted_at, :string
   end
-
 end

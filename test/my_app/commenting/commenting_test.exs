@@ -6,8 +6,18 @@ defmodule MyApp.CommentingTest do
   describe "comments" do
     alias MyApp.Commenting.Comment
 
-    @valid_attrs %{commented_at: "2010-04-17T14:00:00Z", post: %{}, state: "some state", user_id: 42}
-    @update_attrs %{commented_at: "2011-05-18T15:01:01Z", post: %{}, state: "some updated state", user_id: 43}
+    @valid_attrs %{
+      commented_at: "2010-04-17T14:00:00Z",
+      post: %{},
+      state: "some state",
+      user_id: 42
+    }
+    @update_attrs %{
+      commented_at: "2011-05-18T15:01:01Z",
+      post: %{},
+      state: "some updated state",
+      user_id: 43
+    }
     @invalid_attrs %{commented_at: nil, post: nil, state: nil, user_id: nil}
 
     def comment_fixture(attrs \\ %{}) do

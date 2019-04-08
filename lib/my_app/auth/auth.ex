@@ -114,9 +114,7 @@ defmodule MyApp.Auth do
   end
 
   def verify(token) do
-    Phoenix.Token.verify(MyAppWeb.Endpoint, @user_salt, token, [
-      max_age: 86400
-    ])
+    Phoenix.Token.verify(MyAppWeb.Endpoint, @user_salt, token, max_age: 86400)
   end
 
   def lookup(id) do

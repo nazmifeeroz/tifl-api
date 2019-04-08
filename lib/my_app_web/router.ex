@@ -13,8 +13,6 @@ defmodule MyAppWeb.Router do
       schema: MyAppWeb.Schema,
       socket: MyAppWeb.UserSocket
 
-    forward "/", Absinthe.Plug,
-    schema: MyAppWeb.Schema
-
+    forward "/", Absinthe.Plug, schema: MyAppWeb.Schema
   end
 end

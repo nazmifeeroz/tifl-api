@@ -1,5 +1,5 @@
 defmodule MyAppWeb.Context do
-  @behaviour Plug    
+  @behaviour Plug
   import Plug.Conn
 
   def init(opts), do: opts
@@ -11,14 +11,14 @@ defmodule MyAppWeb.Context do
 
   defp build_context(conn) do
     with ["Bearer " <> token] <-
-    get_req_header(conn, "authorization"),
-    {:ok, data} <-
-      MyApp.Auth.verify(token),
-      %{} = user <- get_user(data) do
-        %{current_user: user}
-      else
-        _ -> %{}
-      end
+           get_req_header(conn, "authorization"),
+         {:ok, data} <-
+           MyApp.Auth.verify(token),
+         %{} = user <- get_user(data) do
+      %{current_user: user}
+    else
+      _ -> %{}
+    end
   end
 
   defp get_user(%{id: id}) do

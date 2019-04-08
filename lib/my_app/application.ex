@@ -10,10 +10,10 @@ defmodule MyApp.Application do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      supervisor( MyApp.Repo, [] ),
+      supervisor(MyApp.Repo, []),
       # Start the endpoint when the application starts
-      supervisor( MyAppWeb.Endpoint, [] ),
-      supervisor( Absinthe.Subscription, [MyAppWeb.Endpoint] )
+      supervisor(MyAppWeb.Endpoint, []),
+      supervisor(Absinthe.Subscription, [MyAppWeb.Endpoint])
       # Starts a worker by calling: MyApp.Worker.start_link(arg)
       # {MyApp.Worker, arg},
     ]

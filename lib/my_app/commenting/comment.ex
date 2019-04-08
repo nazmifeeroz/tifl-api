@@ -3,7 +3,6 @@ defmodule MyApp.Commenting.Comment do
   import Ecto.Changeset
   alias MyApp.Commenting.Comment
 
-
   schema "comments" do
     field :commented_at, :utc_datetime
     field :state, :string

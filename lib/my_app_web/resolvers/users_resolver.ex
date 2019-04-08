@@ -10,6 +10,7 @@ defmodule MyAppWeb.UsersResolver do
     case Auth.create_user(args) do
       {:ok, user} ->
         {:ok, user}
+
       {:error, _} ->
         # {:error, error}
         {:error, "error in insert"}
@@ -20,9 +21,10 @@ defmodule MyAppWeb.UsersResolver do
     case Auth.authenticate_user(email, password) do
       {:ok, user} ->
         token = Auth.sign(%{id: user.id})
-        {:ok, %{token: token, user: user }}
+        {:ok, %{token: token, user: user}}
+
       {:error, message} ->
-        {:error, message}  
+        {:error, message}
     end
   end
 end
