@@ -18,8 +18,15 @@ defmodule MyAppWeb.DeedsResolver do
   def add_star(_root, %{input: %{id: id, action: action}}, _info) do
     with deed <- Rewards.get_deed!(id) do
       case action do
-        "increment" ->
+        "plus" ->
           Rewards.update_deed(deed, %{stars: deed.stars + 1})
+
+        "minus" ->
+          if deed.stars != 0 do
+            Rewards.update_deed(deed, %{stars: deed.stars - 1})
+          else
+            {:error, "no stars to minus"}
+          end
 
         _ ->
           {:error, "Invalid action"}
