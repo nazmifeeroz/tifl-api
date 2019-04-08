@@ -21,7 +21,7 @@ defmodule MyAppWeb.Schema do
 
     @desc "Get all deeds"
     field :all_deeds, list_of(:deed) do
-      # middleware(Middleware.Authorize, :any)
+      middleware(Middleware.Authorize, :any)
       resolve(&DeedsResolver.all_deeds/3)
     end
   end
@@ -47,8 +47,14 @@ defmodule MyAppWeb.Schema do
 
     field :create_deed, :deed do
       arg(:input, non_null(:create_deed_input))
-      # middleware(Middleware.Authorize, "admin")
+      middleware(Middleware.Authorize, "admin")
       resolve(&DeedsResolver.create_deed/3)
+    end
+
+    field :add_star, :deed do
+      arg(:input, non_null(:add_star_input))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&DeedsResolver.add_star/3)
     end
 
     field :delete_post, :post do
@@ -88,6 +94,11 @@ defmodule MyAppWeb.Schema do
 
   input_object :create_deed_input do
     field :description, non_null(:string)
+  end
+
+  input_object :add_star_input do
+    field :id, non_null(:id)
+    field :action, non_null(:string)
   end
 
   object :session do

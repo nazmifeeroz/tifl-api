@@ -14,4 +14,16 @@ defmodule MyAppWeb.DeedsResolver do
         {:error, "error creating deed"}
     end
   end
+
+  def add_star(_root, %{input: %{id: id, action: action}}, _info) do
+    with deed <- Rewards.get_deed!(id) do
+      case action do
+        "increment" ->
+          Rewards.update_deed(deed, %{stars: deed.stars + 1})
+
+        _ ->
+          {:error, "Invalid action"}
+      end
+    end
+  end
 end
