@@ -95,7 +95,6 @@ defmodule MyAppWeb.Schema do
           "*"
         end
       )
-
     end
   end
 
