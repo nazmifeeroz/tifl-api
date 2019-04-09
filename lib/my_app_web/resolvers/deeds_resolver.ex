@@ -15,6 +15,11 @@ defmodule MyAppWeb.DeedsResolver do
     end
   end
 
+  def edit_deed(_root, %{input: %{id: id, description: description}}, _info) do
+    Rewards.get_deed!(id)
+    |> Rewards.update_deed(%{description: description})
+  end
+
   def add_star(_root, %{input: %{id: id, action: action}}, _info) do
     with deed <- Rewards.get_deed!(id) do
       case action do

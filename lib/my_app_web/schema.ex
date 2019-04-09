@@ -51,6 +51,12 @@ defmodule MyAppWeb.Schema do
       resolve(&DeedsResolver.create_deed/3)
     end
 
+    field :edit_deed, :deed do
+      arg(:input, non_null(:edit_deed_input))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&DeedsResolver.edit_deed/3)
+    end
+
     field :add_star, :deed do
       arg(:input, non_null(:add_star_input))
       middleware(Middleware.Authorize, "admin")
@@ -77,6 +83,20 @@ defmodule MyAppWeb.Schema do
         end
       )
     end
+
+    field :new_deed, :deed do
+      config(fn _args, _info ->
+        {:ok, topic: "*"}
+      end)
+
+      trigger(
+        [:create_deed],
+        topic: fn _payload ->
+          "*"
+        end
+      )
+
+    end
   end
 
   input_object :create_post_input do
@@ -93,6 +113,11 @@ defmodule MyAppWeb.Schema do
   end
 
   input_object :create_deed_input do
+    field :description, non_null(:string)
+  end
+
+  input_object :edit_deed_input do
+    field :id, non_null(:id)
     field :description, non_null(:string)
   end
 
