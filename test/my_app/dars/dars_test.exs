@@ -65,35 +65,5 @@ defmodule MyApp.DarsTest do
                }
              }
     end
-
-    @query """
-    mutation ($createPostInput: CreatePostInput!) {
-      createPost(input: $createPostInput) {
-        title
-        body
-      }
-    }
-    """
-    test "create_post" do
-      assert {:ok, %User{} = user} = Auth.create_user(@user_attrs)
-      conn = build_conn() |> auth_user(user)
-
-      conn =
-        post conn, "/api",
-          query: @query,
-          variables: %{"createPostInput" => @post_attrs}
-
-      assert json_response(conn, 200) == %{
-               "data" => %{
-                 "createPost" => %{
-                   "body" => "some body",
-                   "title" => "some title"
-                 }
-               }
-             }
-    end
-
-    test "create post" do
-    end
   end
 end
