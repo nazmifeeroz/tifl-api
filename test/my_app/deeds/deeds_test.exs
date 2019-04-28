@@ -173,10 +173,10 @@ defmodule MyApp.DeedsTest do
             }
           }
 
-      resp = 
-        json_response(conn, 200) 
-        |> Map.get("errors") 
-        |> List.first() 
+      resp =
+        json_response(conn, 200)
+        |> Map.get("errors")
+        |> List.first()
         |> Map.get("message")
 
       assert resp == "no stars to minus"

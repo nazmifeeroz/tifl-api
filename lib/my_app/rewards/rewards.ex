@@ -18,7 +18,7 @@ defmodule MyApp.Rewards do
 
   """
   def list_deeds do
-    Repo.all(from d in Deed, order_by: [ desc: d.id ])
+    Repo.all(from d in Deed, order_by: [desc: d.id])
   end
 
   @doc """
