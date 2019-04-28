@@ -15,6 +15,16 @@ defmodule MyAppWeb.DeedsResolver do
     end
   end
 
+  def delete_deed(_root, %{id: id}, _info) do
+    case Rewards.delete_deed_with_id(id) do
+      {:ok, deed} ->
+        {:ok, deed}
+
+      {:error, _} ->
+        {:error, "error deleting deed"}
+    end
+  end
+
   def edit_deed(_root, %{input: %{id: id, description: description}}, _info) do
     Rewards.get_deed!(id)
     |> Rewards.update_deed(%{description: description})

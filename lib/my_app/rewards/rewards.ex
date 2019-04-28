@@ -85,6 +85,11 @@ defmodule MyApp.Rewards do
       {:error, %Ecto.Changeset{}}
 
   """
+  def delete_deed_with_id(id) do
+    get_deed!(id)
+    |> Repo.delete()
+  end
+
   def delete_deed(%Deed{} = deed) do
     Repo.delete(deed)
   end

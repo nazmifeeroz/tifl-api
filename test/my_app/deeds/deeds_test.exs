@@ -86,6 +86,27 @@ defmodule MyApp.DeedsTest do
     end
 
     @query """
+    mutation ($id: ID!) {
+      deleteDeed(id: $id) {
+        description
+        stars
+      }
+    }
+    """
+    test "delete deed", %{conn: conn, deed: deed} do
+      conn =
+        post conn, "/api",
+          query: @query,
+          variables: %{id: deed.id}
+
+      assert json_response(conn, 200) == %{
+               "data" => %{
+                 "deleteDeed" => @assert_attr
+               }
+             }
+    end
+
+    @query """
     mutation ($editDeedInput: EditDeedInput!) {
       editDeed(input: $editDeedInput) {
         description

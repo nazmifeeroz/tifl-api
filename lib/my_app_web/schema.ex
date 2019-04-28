@@ -51,6 +51,12 @@ defmodule MyAppWeb.Schema do
       resolve(&DeedsResolver.create_deed/3)
     end
 
+    field :delete_deed, :deed do
+      arg(:id, non_null(:id))
+      middleware(Middleware.Authorize, "admin")
+      resolve(&DeedsResolver.delete_deed/3)
+    end
+
     field :edit_deed, :deed do
       arg(:input, non_null(:edit_deed_input))
       middleware(Middleware.Authorize, "admin")
