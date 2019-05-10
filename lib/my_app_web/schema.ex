@@ -96,21 +96,8 @@ defmodule MyAppWeb.Schema do
       end)
 
       trigger(
-        [:create_deed],
+        [:create_deed, :add_star],
         topic: fn _payload ->
-          "*"
-        end
-      )
-    end
-
-    field :amended_deed, :deed do
-      config(fn _args, context ->
-        {:ok, topic: "*"}
-      end)
-
-      trigger(
-        [:add_star],
-        topic: fn payload ->
           "*"
         end
       )
