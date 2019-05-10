@@ -102,6 +102,19 @@ defmodule MyAppWeb.Schema do
         end
       )
     end
+
+    field :amended_deed, :deed do
+      config(fn _args, context ->
+        {:ok, topic: "*"}
+      end)
+
+      trigger(
+        [:add_star],
+        topic: fn payload ->
+          "*"
+        end
+      )
+    end
   end
 
   input_object :create_post_input do
