@@ -18,7 +18,8 @@ defmodule MyAppWeb.DeedsResolver do
   def delete_deed(_root, %{id: id}, _info) do
     case Rewards.delete_deed_with_id(id) do
       {:ok, deed} ->
-        {:ok, deed}
+        resp = Map.put(deed, :action, "deleted")
+        {:ok, resp}
 
       {:error, _} ->
         {:error, "error deleting deed"}

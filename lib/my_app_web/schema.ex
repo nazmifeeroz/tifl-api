@@ -153,5 +153,6 @@ defmodule MyAppWeb.Schema do
     field :id, non_null(:id)
     field :description, non_null(:string)
     field :stars, non_null(:integer)
+    field :action, :string
   end
 end
