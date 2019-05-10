@@ -96,7 +96,7 @@ defmodule MyAppWeb.Schema do
       end)
 
       trigger(
-        [:create_deed, :add_star],
+        [:create_deed, :add_star, :delete_deed],
         topic: fn _payload ->
           "*"
         end
